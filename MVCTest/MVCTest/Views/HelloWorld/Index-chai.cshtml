@@ -1,0 +1,104 @@
+﻿@*@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+@{
+    @Scripts.Render("~/Scripts/jquery.min.js")
+    @Scripts.Render("~/Scripts/jquery.imgareaselect.pack.js")
+    @Styles.Render("/Content/css/imgareaselect-default.css")
+
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+
+            var image = document.getElementById('photo');
+
+            // Take the original size from image with naturalHeight - Width
+            var originalHeight = image.naturalHeight;
+            var originalWidth = image.naturalWidth;
+
+            // Show original size in console to make sure is correct (optional):
+            console.log('IMG width: ' + originalWidth + ', heigth: ' + originalHeight)
+
+            $('#photo').imgAreaSelect({
+                handles: true,
+                imageHeight: originalHeight,
+                imageWidth: originalWidth,
+                onSelectChange: getCoordinates
+            });
+
+
+
+            function preview(img, selection) {
+                if (!selection.width || !selection.height)
+                    return;
+
+                // With this two lines i take the proportion between the original size and
+                // the resized img
+                var porcX = img.naturalWidth / img.width;
+                var porcY = img.naturalHeight / img.height;
+
+                // Send the corrected coordinates to some inputs:
+                // Math.round to get integer number
+                // (selection.x1 * porcX) to correct the coordinate to real size
+                $('input#x1').val(Math.round(selection.x1 * porcX));
+                $('input#y1').val(Math.round(selection.y1 * porcY));
+                $('input#x2').val(Math.round(selection.x2 * porcX));
+                $('input#y2').val(Math.round(selection.y2 * porcY));
+                $('input#w').val(Math.round(selection.width * porcX));
+                $('input#h').val(Math.round(selection.height * porcY));
+
+                $('#preview').css({
+                    width: Math.round(selection.width * porcX) + "px",
+                    height: Math.round(selection.height * porcY) + "px",
+                    //marginLeft: -Math.round(scaleX * selection.x1),
+                    //marginTop: -Math.round(scaleY * selection.y1)
+                });              
+            }
+
+            function getCoordinates(img, selection) {
+
+                if (!selection.width || !selection.height) {
+                    return;
+                }
+
+                // With this two lines i take the proportion between the original size and
+                // the resized img
+                var porcX = img.naturalWidth / img.width;
+                var porcY = img.naturalHeight / img.height;
+                console.log('w:' + img.width);
+                console.log('h:' + img.height);
+                // Send the corrected coordinates to some inputs:
+                // Math.round to get integer number
+                // (selection.x1 * porcX) to correct the coordinate to real size
+                $('input#x1').val(Math.round(selection.x1 * porcX));
+                $('input#y1').val(Math.round(selection.y1 * porcY));
+                $('input#x2').val(Math.round(selection.x2 * porcX));
+                $('input#y2').val(Math.round(selection.y2 * porcY));
+                $('input#w').val(Math.round(selection.width * porcX));
+                $('input#h').val(Math.round(selection.height * porcY));
+            }
+        });
+    </script>
+}
+@{
+    ViewBag.Title = "Movie List";
+}
+<div class="container-fluid">
+    <div class="col-md-6">
+        <img id="photo" src="@Url.Content("~/Content/Image/test.jpg")" alt="Sample Photo" style="max-width:100%; max-height:100%;" />
+    </div>
+    <div class="col-md-6">
+        <input type="submit" value="Crop" onclick="location.href='@Url.Action("CropImage", "HelloWorld")'" />
+        <br />
+        <form action="@Url.Action("Index","HelloWorld")" method="post">
+            <p>x1: <input name="x1" id="x1" value="" /></p>
+            <p>y1: <input name="y1" id="y1" value="" /></p>
+            <p>x2: <input name="x2" id="x2" value="" /></p>
+            <p>y2: <input name="y2" id="y2" value="" /></p>
+            <p>Width: <input name="w" id="w" value="" /></p>
+            <p>Height: <input name="h" id="h" value="" /></p>
+            <input type="submit" name="submit" value="Submit" /></p>
+        </form>
+        
+    </div>
+</div>

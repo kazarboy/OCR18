@@ -1,62 +1,31 @@
 ﻿@*@{
         Layout = "~/Views/Shared/_Layout.cshtml";
     }*@
-
 @{
     @Scripts.Render("~/Scripts/jquery.min.js")
+    @Scripts.Render("~/Scripts/custom.js")
     @Scripts.Render("~/Scripts/jquery.imgareaselect.pack.js")
     @Styles.Render("/Content/css/imgareaselect-default.css")
-
-    <script type="text/javascript">
-
-        jQuery(document).ready(function ($) {
-            $('#photo').imgAreaSelect({
-                handles: true,
-                onSelectEnd: function (img, selection) {
-                    $('input[name="x1"]').val(selection.x1);
-                    $('input[name="y1"]').val(selection.y1);
-                    $('input[name="x2"]').val(selection.x2);
-                    $('input[name="y2"]').val(selection.y2);
-
-                    //alert('width: ' + selection.width + '; height: ' + selection.height + '; X1: ' + selection.x1 + '; Y1: ' + selection.y1 + '; X2: ' + selection.x2 + '; Y2: ' + selection.y2);
-                    $("#X1").text(selection.x1);
-                    $("#Y1").text(selection.y1);
-                    $("#Width").text(selection.width);
-                    $("#Height").text(selection.height);
-                }
-            });
-        });
-    </script>
 }
-
 @{
     ViewBag.Title = "Movie List";
 }
-
-    <div class="container-fluid">
-        <div class="col-md-6">
-            <img id="photo" src="@Url.Content("~/Content/Image/check.pdf")" alt="Sample Photo" />
-        </div>
-        <div class="col-md-3">
-            <input type="submit" value="Crop" onclick="location.href='@Url.Action("CropImage", "HelloWorld")'" />
-            <br />
-            <form action="@Url.Action("Index","HelloWorld")" method="post">
-                <input type="hidden" name="x1" value="" />
-                <input type="hidden" name="y1" value="" />
-                <input type="hidden" name="x2" value="" />
-                <input type="hidden" name="y2" value="" />
-                <input type="submit" name="submit" value="Submit" />
-            </form>
-            <br />
-            <label>X1 :</label>
-            <label id="X1"></label>
-            <label>Y1 :</label>
-            <label id="Y1"></label>
-            <label id="X2">X2 :</label>
-            <label id="Y2">Y2 : </label>
-            <label>Width :</label>
-            <label id="Width"></label>
-            <label>Height :</label>
-            <label id="Height"></label>
-        </div>
+<div class="container-fluid">
+    <div class="col-md-6">
+        <img id="photo" src="@Url.Content("~/Content/Image/test.jpg")" alt="Sample Photo" style="max-width:100%; max-height:100%;" />
     </div>
+    <div class="col-md-6">
+        <input type="submit" value="Crop" onclick="location.href='@Url.Action("CropImage", "HelloWorld")'" />
+        <br />
+        <form action="@Url.Action("Index","HelloWorld")" method="post">
+            <p>x1: <input name="x1" id="x1" value="" /></p>
+            <p>y1: <input name="y1" id="y1" value="" /></p>
+            <p>x2: <input name="x2" id="x2" value="" /></p>
+            <p>y2: <input name="y2" id="y2" value="" /></p>
+            <p>Width: <input name="w" id="w" value="" /></p>
+            <p>Height: <input name="h" id="h" value="" /></p>
+            <input type="submit" name="submit" value="Submit" /></p>
+        </form>
+
+    </div>
+</div>
